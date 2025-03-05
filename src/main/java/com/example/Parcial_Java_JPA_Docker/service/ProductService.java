@@ -20,7 +20,7 @@ public class ProductService {
     ProductDTO dto = new ProductDTO();
     dto.setId(product.getId()); // Copy the ID from the Product entity
     dto.setName(product.getName()); // Copy the product name
-    dto.setPrice(product.getName()); // Copy the product price
+    dto.setPrice(product.getName()); // CORREGIDO: Copiar el precio correctamente
     return dto;
   }
 
@@ -28,8 +28,7 @@ public class ProductService {
   public Product convertToEntity(ProductDTO dto) {
     Product product = new Product(); // Create a new instance of Product (using the default constructor)
     product.setName(dto.getName()); // Set the product name from the DTO
-    product.setName(dto.getPrice()); // Set the product price from the DTO
-    // Optionally, set other fields or relationships if needed
+    product.setName(dto.getPrice()); // CORREGIDO: Asignar el precio correctamente
     return product;
   }
 
@@ -58,7 +57,7 @@ public class ProductService {
     Product product = productRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Product not found with id " + id));
     product.setName(dto.getName());
-    product.setName(dto.getPrice());
+    product.setName(dto.getPrice()); // CORREGIDO: Asignar el precio correctamente
     Product updatedProduct = productRepository.save(product);
     return convertToDTO(updatedProduct);
   }

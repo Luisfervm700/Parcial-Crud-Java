@@ -1,54 +1,85 @@
 package com.example.Parcial_Java_JPA_Docker.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "orders")
 public class Order {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    // Many-to-One relationship with User
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+  // Date of the order
+  private LocalDate date;
 
-    // Many-to-Many relationship with Product
-    @ManyToMany
-    @JoinTable(name = "order_product", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> product = new ArrayList<>();
+  // Total price of the order
+  private Double total;
 
-    public Object getDate() {
-      throw new UnsupportedOperationException("Unimplemented method 'getDate'");
-    }
+  // Many-to-One relationship with User
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
-    public void setDate(Object date) {
-      throw new UnsupportedOperationException("Unimplemented method 'setDate'");
-    }
+  // Many-to-Many relationship with Product
+  @ManyToMany
+  @JoinTable(name = "order_product", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+  private List<Product> products = new ArrayList<>();
 
-    public Object getTotal() {
-      throw new UnsupportedOperationException("Unimplemented method 'getTotal'");
-    }
+  // Default Constructor
+  public Order() {
+  }
 
-    public void setTotal(Object total) {
-      throw new UnsupportedOperationException("Unimplemented method 'setTotal'");
-    }
+  // Parameterized Constructor
+  public Order(LocalDate date, Double total, User user, List<Product> products) {
+    this.date = date;
+    this.total = total;
+    this.user = user;
+    this.products = products;
+  }
 
-    public Long getId() {
-      throw new UnsupportedOperationException("Unimplemented method 'getId'");
-    }
+  // Getters and Setters
+  public Long getId() {
+    return id;
+  }
 
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public LocalDate getDate() {
+    return date;
+  }
+
+  public void setDate(LocalDate date) {
+    this.date = date;
+  }
+
+  public Double getTotal() {
+    return total;
+  }
+
+  public void setTotal(Double total) {
+    this.total = total;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
+
+  public List<Product> getProducts() {
+    return products;
+  }
+
+  public void setProducts(List<Product> products) {
+    this.products = products;
+  }
 }

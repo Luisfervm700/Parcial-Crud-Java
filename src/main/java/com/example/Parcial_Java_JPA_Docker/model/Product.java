@@ -12,33 +12,57 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+/**
+ * Entity representing a Product.
+ * This entity is mapped to the "products" table in the database.
+ */
 @Entity
 @Table(name = "products")
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  // Primary key for the Product entity.
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    // Many-to-One relationship with Category
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+  // Many-to-One relationship with Category.
+  // A product belongs to one category.
+  @ManyToOne
+  @JoinColumn(name = "category_id")
+  private Category category;
 
-    // Many-to-Many relationship with Order
-    @ManyToMany(mappedBy = "products")
-    private List<Order> orders = new ArrayList<>();
+  // Many-to-Many relationship with Order.
+  // A product can be associated with multiple orders.
+  @ManyToMany(mappedBy = "products")
+  private List<Order> orders = new ArrayList<>();
 
-    public Object getName() {
-      throw new UnsupportedOperationException("Unimplemented method 'getName'");
-    }
+  /**
+   * Retrieves the name of the product.
+   *
+   * @return the product name.
+   * @throws UnsupportedOperationException if the method is not implemented.
+   */
+  public Object getName() {
+    throw new UnsupportedOperationException("Unimplemented method 'getName'");
+  }
 
-    public void setName(Object name) {
-      throw new UnsupportedOperationException("Unimplemented method 'setName'");
-    }
+  /**
+   * Sets the name of the product.
+   *
+   * @param name the new product name.
+   * @throws UnsupportedOperationException if the method is not implemented.
+   */
+  public void setName(Object name) {
+    throw new UnsupportedOperationException("Unimplemented method 'setName'");
+  }
 
-    public Long getId() {
-      throw new UnsupportedOperationException("Unimplemented method 'getId'");
-    }
-
+  /**
+   * Retrieves the unique identifier of the product.
+   *
+   * @return the product ID.
+   * @throws UnsupportedOperationException if the method is not implemented.
+   */
+  public Long getId() {
+    throw new UnsupportedOperationException("Unimplemented method 'getId'");
+  }
 }

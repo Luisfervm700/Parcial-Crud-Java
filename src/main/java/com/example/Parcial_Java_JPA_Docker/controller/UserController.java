@@ -18,53 +18,96 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.Parcial_Java_JPA_Docker.model.User;
 import com.example.Parcial_Java_JPA_Docker.repository.UserRepository;
 
+/**
+ * REST Controller for managing User entities.
+ * Provides endpoints for retrieving, creating, updating, and deleting users.
+ */
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-    // Obtener todos los usuarios
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+  /**
+   * Retrieve all users.
+   *
+   * @return A list of all users.
+   */
+  @GetMapping
+  public List<User> getAllUsers() {
+    return userRepository.findAll();
+  }
 
-    // Obtener un usuario por ID
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
-        return ResponseEntity.ok(user);
-    }
+  /**
+   * Retrieve a user by its ID.
+   *
+   * @param id The ID of the user to retrieve.
+   * @return ResponseEntity containing the found user.
+   * @throws RuntimeException if the user is not found.
+   */
+  @GetMapping("/{id}")
+  public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    User user = userRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+    return ResponseEntity.ok(user);
+  }
 
-    // Crear un nuevo usuario
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
-    }
+  /**
+   * Create a new user.
+   *
+   * @param user The User object provided in the request body.
+   * @return The created user.
+   */
+  @PostMapping
+  public User createUser(@RequestBody User user) {
+    return userRepository.save(user);
+  }
 
-    // Actualizar un usuario existente
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
-        user.setName(userDetails.getName());
-        user.setEmail(userDetails.getEmail());
-        // Actualiza otros atributos según sea necesario
-        User updatedUser = userRepository.save(user);
-        return ResponseEntity.ok(updatedUser);
-    }
+  /**
+   * Update an existing user.
+   *
+   * @param id          The ID of the user to update.
+   * @param userDetails The new details for the user.
+   * @return ResponseEntity containing the updated user.
+   * @throws RuntimeException if the user is not found.
+   */
+  @PutMapping("/{id}")
+  public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+    // Find the existing user or throw an exception if not found
+    User user = userRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("User not found with id " + id));
 
-    // Eliminar un usuario
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
-        userRepository.delete(user);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return ResponseEntity.ok(response);
-    }
+    // Update the user's attributes
+    user.setName(userDetails.getName());
+    user.setEmail(userDetails.getEmail());
+    // Update other attributes as needed
+
+    // Save and return the updated user
+    User updatedUser = userRepository.save(user);
+    return ResponseEntity.ok(updatedUser);
+  }
+
+  /**
+   * Delete a user by its ID.
+   *
+   * @param id The ID of the user to delete.
+   * @return ResponseEntity with a map indicating that the deletion was
+   *         successful.
+   * @throws RuntimeException if the user is not found.
+   */
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id) {
+    // Find the existing user or throw an exception if not found
+    User user = userRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+
+    // Delete the found user
+    userRepository.delete(user);
+
+    // Prepare and return a response indicating successful deletion
+    Map<String, Boolean> response = new HashMap<>();
+    response.put("deleted", Boolean.TRUE);
+    return ResponseEntity.ok(response);
+  }
 }
